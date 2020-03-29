@@ -5,5 +5,5 @@
     <string name="exit">Exit</string>
     <string name="lives">lives: </string>
     <string name="points">points: </string>
-    <string name="time_left">time left: </string>
+    <string name="time_left">mines left: </string>
 </resources>

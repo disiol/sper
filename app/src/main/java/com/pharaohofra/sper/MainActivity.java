@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     public int receiveClick(ImageView imageView) {
 
         ///Нет смысла обрабатывать клики по уже открытым полям
-        if (clic && !this.isMarked) {
+        if (clic && imageView.getContentDescription() == noFlag) {
             ///Здесь обработаем щелчки левой кнопкой
             ///Заметим, что щёлкать левой кнопкой по флагам
             ///абсолютно бессмысленно
@@ -136,11 +136,16 @@ public class MainActivity extends AppCompatActivity {
             if (imageView.getContentDescription() == noFlag) {
                 imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.flaged));
                 imageView.setContentDescription(flag);
+                binding.timeTextView.setText(String.valueOf(bombCaunter ++));
+
 
 
             } else if (imageView.getContentDescription() == flag) {
                 imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.closed));
                 imageView.setContentDescription(noFlag);
+                binding.timeTextView.setText(String.valueOf(bombCaunter --));
+
+
             }
         }
 
