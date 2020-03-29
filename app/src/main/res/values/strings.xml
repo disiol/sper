@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">sper</string>
+
+    <string name="new_game">New Game</string>
+    <string name="exit">Exit</string>
+    <string name="lives">lives: </string>
+    <string name="points">points: </string>
+    <string name="time_left">time left: </string>
+</resources>

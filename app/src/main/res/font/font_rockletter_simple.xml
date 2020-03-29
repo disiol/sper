@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fruitsBoom="http://schemas.android.com/apk/res-auto">
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/rockletter_simple"
+        fruitsBoom:fontStyle="normal"
+        fruitsBoom:fontWeight="400"
+        fruitsBoom:font="@font/rockletter_simple"
+
+        />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="100"
+        android:font="@font/rockletter_simple"
+        fruitsBoom:fontStyle="normal"
+        fruitsBoom:fontWeight="100"
+        fruitsBoom:font="@font/rockletter_simple"
+        />
+
+</font-family>
