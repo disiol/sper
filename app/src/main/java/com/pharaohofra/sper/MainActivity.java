@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.gridlayout.widget.GridLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -50,10 +51,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        binding.newGameButton.setOnClickListener(v -> {
+            cellsCount = CELLS_COUNT_X * CELLS_COUNT_Y;
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+            ///TODO
+        });
+
     }
 
     private void schowBord(GridLayout gridLayout) {
-
         while (cellsCount > 0) {
             ImageView imageView = eadToGridLayout(gridLayout, R.drawable.closed, cellsCount);
             imageView.requestLayout();
@@ -61,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
             imageView.setOnClickListener(v -> {
                 Log.e(MYLOG_TEG, imageView.getTag().toString());
                 receiveClick(imageView);
+                Log.e(MYLOG_TEG, " imageView.getId() =  " + imageView.getId());
+
                 //TODO
             });
             cellsCount--;
