@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 celes.add(pushButtonId - CELLS_COUNT_X - 1);
 
                 for (int id : celes) {
-                    if (inBounds(id) && id % CELLS_COUNT_X != 0) {
+                    if (inBounds(id) && pushButtonId % CELLS_COUNT_X != 0) {
                         ImageView imageViewTmp = findViewById(id);
                         receiveClick(imageViewTmp);
                     }
@@ -105,6 +105,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    private boolean inBounds(int id) {
+        if (id < 1|| id >= CELLS_COUNT_X * CELLS_COUNT_Y)
+            return false;
+        else
+            return true;
+    }
+
 
     private ImageView eadToGridLayout(GridLayout gridLayout, int imageResource, int id) {
         ImageView imageView = new ImageView(this);
@@ -186,12 +194,7 @@ public class MainActivity extends AppCompatActivity {
         return NO_BOMB;
     }
 
-    private boolean inBounds(int id) {
-        if (id < 1|| id >= CELLS_COUNT_X * CELLS_COUNT_Y)
-            return false;
-        else
-            return true;
-    }
+
 
 
     // Получение соседних клеток
