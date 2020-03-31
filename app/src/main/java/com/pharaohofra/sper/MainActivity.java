@@ -13,6 +13,8 @@ import android.widget.ImageView;
 
 import com.pharaohofra.sper.databinding.ActivityMainBinding;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Random;
 
 import static com.pharaohofra.sper.constants.Constants.BOMB;
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private String noFlag = "noFlag";
     private String flag = "flag";
 
+    private int pushButtonId;
+    private ArrayList<Integer> celes;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         schowBord(binding.bordGridLayout);
 
+        celes = new ArrayList<>();
         binding.clicImageButton.setOnClickListener(v -> {
             if (clic) {
                 clic = false;
@@ -67,11 +73,30 @@ public class MainActivity extends AppCompatActivity {
             imageView.requestLayout();
             setSize(imageView);
             imageView.setOnClickListener(v -> {
-                Log.e(MYLOG_TEG, imageView.getTag().toString());
+                Log.e(MYLOG_TEG, "imageView.getTag().toString()" + imageView.getTag().toString());
                 receiveClick(imageView);
-                Log.e(MYLOG_TEG, " imageView.getId() =  " + imageView.getId());
+                pushButtonId = imageView.getId();
 
-                //TODO
+                celes.clear();
+                Log.e(MYLOG_TEG, " imageView.getId() =  " + pushButtonId);
+
+                celes.add(pushButtonId + CELLS_COUNT_X);
+                celes.add(pushButtonId - CELLS_COUNT_X);
+                celes.add(pushButtonId - 1);
+                celes.add(pushButtonId + 1);
+
+                celes.add(pushButtonId + CELLS_COUNT_X + 1);
+                celes.add(pushButtonId + CELLS_COUNT_X - 1);
+                celes.add(pushButtonId - CELLS_COUNT_X + 1);
+                celes.add(pushButtonId - CELLS_COUNT_X - 1);
+
+                for (int id : celes) {
+                    if (inBounds(id) && id % CELLS_COUNT_X != 0) {
+                        ImageView imageViewTmp = findViewById(id);
+                        receiveClick(imageViewTmp);
+                    }
+                }
+                //TODO записат кодинаты соседних клеток
             });
             cellsCount--;
         }
@@ -137,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 ///Если мы попали в нолик, нужно открыть
                 ///Все соседние ячейки. Этим займётся GUI :)
                 imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.zero));
-                return 1;
+                return NO_BOMB;
             }
 
         } else if (!clic) {
@@ -146,14 +171,13 @@ public class MainActivity extends AppCompatActivity {
             if (imageView.getContentDescription() == noFlag) {
                 imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.flaged));
                 imageView.setContentDescription(flag);
-                binding.timeTextView.setText(String.valueOf(bombCaunter ++));
-
+                binding.timeTextView.setText(String.valueOf(bombCaunter++));
 
 
             } else if (imageView.getContentDescription() == flag) {
                 imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.closed));
                 imageView.setContentDescription(noFlag);
-                binding.timeTextView.setText(String.valueOf(bombCaunter --));
+                binding.timeTextView.setText(String.valueOf(bombCaunter--));
 
 
             }
@@ -162,7 +186,16 @@ public class MainActivity extends AppCompatActivity {
         return NO_BOMB;
     }
 
+    private boolean inBounds(int id) {
+        if (id < 1|| id >= CELLS_COUNT_X * CELLS_COUNT_Y)
+            return false;
+        else
+            return true;
+    }
 
+
+    // Получение соседних клеток
+//
 //    public static Cell[][] generate() {
 //        {
 //            Random rnd = new Random();
