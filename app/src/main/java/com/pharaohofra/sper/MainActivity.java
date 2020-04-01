@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int CELLS_COUNT_X = 5;
     private static final int CELLS_COUNT_Y = 5;
 
-    private static int cellsCount = CELLS_COUNT_X * CELLS_COUNT_Y;
+    private static int cellsCount;
     private ActivityMainBinding binding;
     private int bombCaunter;
     private boolean clic;
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.newGameButton.setOnClickListener(v -> {
-            cellsCount = CELLS_COUNT_X * CELLS_COUNT_Y;
+            cellsCount = 0;
             Intent intent = getIntent();
             finish();
             startActivity(intent);
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void schowBord(GridLayout gridLayout) {
-        while (cellsCount > 0) {
+        while (cellsCount < CELLS_COUNT_X * CELLS_COUNT_Y) {
             ImageView imageView = eadToGridLayout(gridLayout, R.drawable.closed, cellsCount);
             imageView.requestLayout();
             setSize(imageView);
@@ -80,25 +80,46 @@ public class MainActivity extends AppCompatActivity {
                 celes.clear();
                 Log.e(MYLOG_TEG, " imageView.getId() =  " + pushButtonId);
 
-                celes.add(pushButtonId + CELLS_COUNT_X);
-                celes.add(pushButtonId - CELLS_COUNT_X);
-                celes.add(pushButtonId - 1);
-                celes.add(pushButtonId + 1);
+                int tileUpper = pushButtonId + CELLS_COUNT_X;
+                int tileLower = pushButtonId - CELLS_COUNT_X;
+                int tileLeft = pushButtonId - 1;
+                int tileRight = pushButtonId + 1;
 
-                celes.add(pushButtonId + CELLS_COUNT_X + 1);
-                celes.add(pushButtonId + CELLS_COUNT_X - 1);
-                celes.add(pushButtonId - CELLS_COUNT_X + 1);
-                celes.add(pushButtonId - CELLS_COUNT_X - 1);
+                int tileUpperRight = pushButtonId + CELLS_COUNT_X + 1;
+                int tileUpperLeft = pushButtonId + CELLS_COUNT_X - 1;
+                int tileLowerRight = pushButtonId - CELLS_COUNT_X + 1;
+                int tileLowerLeft = pushButtonId - CELLS_COUNT_X - 1;
+
+
+                celes.add(tileUpper);
+                celes.add(tileLower);
+
+                if ((pushButtonId + 1) % (CELLS_COUNT_X ) != 0) {
+                    Log.d(MYLOG_TEG, "pushButtonId +1  % CELLS_COUNT_X = " + (pushButtonId + 1) % (CELLS_COUNT_X));
+                    celes.add(tileLeft);
+                    celes.add(tileUpperRight);
+                    celes.add(tileLowerRight);
+                }
+
+
+                if (pushButtonId % (CELLS_COUNT_X ) != 0) {
+                    Log.d(MYLOG_TEG, "pushButtonId  % CELLS_COUNT_X = " + pushButtonId % CELLS_COUNT_X);
+
+                    celes.add(tileRight);
+                    celes.add(tileUpperLeft);
+                    celes.add(tileLowerLeft);
+                }
+
 
                 for (int id : celes) {
-                    if (inBounds(id) && pushButtonId % CELLS_COUNT_X != 0) {
+                    if (inBounds(id)) {
                         ImageView imageViewTmp = findViewById(id);
                         receiveClick(imageViewTmp);
                     }
                 }
                 //TODO записат кодинаты соседних клеток
             });
-            cellsCount--;
+            cellsCount++;
         }
 
         binding.timeTextView.setText(String.valueOf(bombCaunter));
@@ -107,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean inBounds(int id) {
-        if (id < 1|| id >= CELLS_COUNT_X * CELLS_COUNT_Y)
+        if (id < 1 || id >= CELLS_COUNT_X * CELLS_COUNT_Y)
             return false;
         else
             return true;
@@ -170,7 +191,9 @@ public class MainActivity extends AppCompatActivity {
                 ///Если мы попали в нолик, нужно открыть
                 ///Все соседние ячейки. Этим займётся GUI :)
                 imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.zero));
+                Log.e(MYLOG_TEG, " imageView.getId() =  " + imageView.getId());
                 return NO_BOMB;
+
             }
 
         } else if (!clic) {
@@ -193,8 +216,6 @@ public class MainActivity extends AppCompatActivity {
 
         return NO_BOMB;
     }
-
-
 
 
     // Получение соседних клеток
