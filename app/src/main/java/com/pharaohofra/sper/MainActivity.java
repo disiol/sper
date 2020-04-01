@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
                 int tileUpper = pushButtonId + CELLS_COUNT_X;
                 int tileLower = pushButtonId - CELLS_COUNT_X;
+
                 int tileLeft = pushButtonId - 1;
                 int tileRight = pushButtonId + 1;
 
@@ -93,21 +94,21 @@ public class MainActivity extends AppCompatActivity {
 
                 celes.add(tileUpper);
                 celes.add(tileLower);
-
-                if ((pushButtonId + 1) % (CELLS_COUNT_X ) != 0) {
-                    Log.d(MYLOG_TEG, "pushButtonId +1  % CELLS_COUNT_X = " + (pushButtonId + 1) % (CELLS_COUNT_X));
+                if ((pushButtonId + 1) % (CELLS_COUNT_X) != 0) {
                     celes.add(tileLeft);
                     celes.add(tileUpperRight);
+                    celes.add(tileUpperLeft);
                     celes.add(tileLowerRight);
+                } else {
+                    Log.d(MYLOG_TEG, "pushButtonId +1  % CELLS_COUNT_X = " + (pushButtonId + 1) % (CELLS_COUNT_X));
                 }
 
-
-                if (pushButtonId % (CELLS_COUNT_X ) != 0) {
-                    Log.d(MYLOG_TEG, "pushButtonId  % CELLS_COUNT_X = " + pushButtonId % CELLS_COUNT_X);
-
+                if (pushButtonId % (CELLS_COUNT_X) != 0) {
                     celes.add(tileRight);
                     celes.add(tileUpperLeft);
                     celes.add(tileLowerLeft);
+                } else {
+                    Log.d(MYLOG_TEG, "pushButtonId  % CELLS_COUNT_X = " + pushButtonId % CELLS_COUNT_X);
                 }
 
 
