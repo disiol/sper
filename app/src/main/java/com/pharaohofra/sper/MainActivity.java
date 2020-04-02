@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 celes.add(tileUpper);
                 celes.add(tileLower);
                 if ((pushButtonId + 1) % (CELLS_COUNT_X) != 0) {
-                    celes.add(tileLeft);
+                    celes.add(tileRight);
                     celes.add(tileUpperRight);
                     celes.add(tileLowerRight);
                 } else {
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (pushButtonId % (CELLS_COUNT_X) != 0) {
-                    celes.add(tileRight);
+                    celes.add(tileLeft);
                     celes.add(tileUpperLeft);
                     celes.add(tileLowerLeft);
                 } else {
