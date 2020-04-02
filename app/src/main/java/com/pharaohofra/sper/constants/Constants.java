@@ -9,5 +9,6 @@ public class Constants {
     public static final int BOMB = -1;
     public static final int BOMBED = -2;
     public static final int NO_BOMB = 0;
+    public static final int FLAGET = 1;
 
 }

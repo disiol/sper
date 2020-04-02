@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import static com.pharaohofra.sper.constants.Constants.BOMB;
+import static com.pharaohofra.sper.constants.Constants.FLAGET;
 import static com.pharaohofra.sper.constants.Constants.MYLOG_TEG;
 import static com.pharaohofra.sper.constants.Constants.NO_BOMB;
 
@@ -77,45 +78,11 @@ public class MainActivity extends AppCompatActivity {
                 receiveClick(imageView);
                 pushButtonId = imageView.getId();
 
-                celes.clear();
-                Log.e(MYLOG_TEG, " imageView.getId() =  " + pushButtonId);
+                receiveClick(imageView);
 
-                int tileUpper = pushButtonId + CELLS_COUNT_X;
-                int tileLower = pushButtonId - CELLS_COUNT_X;
-
-                int tileLeft = pushButtonId - 1;
-                int tileRight = pushButtonId + 1;
-
-                int tileUpperRight = pushButtonId + CELLS_COUNT_X + 1;
-                int tileUpperLeft = pushButtonId + CELLS_COUNT_X - 1;
-                int tileLowerRight = pushButtonId - CELLS_COUNT_X + 1;
-                int tileLowerLeft = pushButtonId  - CELLS_COUNT_X - 1;
-
-
-                celes.add(tileUpper);
-                celes.add(tileLower);
-                if ((pushButtonId + 1) % (CELLS_COUNT_X) != 0) {
-                    celes.add(tileRight);
-                    celes.add(tileUpperRight);
-                    celes.add(tileLowerRight);
-                } else {
-                    Log.d(MYLOG_TEG, "pushButtonId +1  % CELLS_COUNT_X = " + (pushButtonId + 1) % (CELLS_COUNT_X));
-                }
-
-                if (pushButtonId % (CELLS_COUNT_X) != 0) {
-                    celes.add(tileLeft);
-                    celes.add(tileUpperLeft);
-                    celes.add(tileLowerLeft);
-                } else {
-                    Log.d(MYLOG_TEG, "pushButtonId  % CELLS_COUNT_X = " + pushButtonId % CELLS_COUNT_X);
-                }
-
-
-                for (int id : celes) {
-                    if (inBounds(id)) {
-                        ImageView imageViewTmp = findViewById(id);
-                        receiveClick(imageViewTmp);
-                    }
+                if(receiveClick(imageView) == NO_BOMB) {
+                    getCordinatsCeles();
+                    ShowSeleWisAuutBimb();
                 }
                 //TODO записат кодинаты соседних клеток
             });
@@ -125,6 +92,52 @@ public class MainActivity extends AppCompatActivity {
         binding.timeTextView.setText(String.valueOf(bombCaunter));
 
 
+    }
+
+    private void ShowSeleWisAuutBimb() {
+        for (int id : celes) {
+            if (inBounds(id)) {
+                ImageView imageViewTmp = findViewById(id);
+
+                if ((int)imageViewTmp.getTag() != BOMB) {
+                    receiveClick(imageViewTmp);
+                }
+            }
+        }
+    }
+
+    private void getCordinatsCeles() {
+        celes.clear();
+        Log.e(MYLOG_TEG, " imageView.getId() =  " + pushButtonId);
+
+        int tileUpper = pushButtonId + CELLS_COUNT_X;
+        int tileLower = pushButtonId - CELLS_COUNT_X;
+        int tileLeft = pushButtonId - 1;
+        int tileRight = pushButtonId + 1;
+
+        int tileUpperRight = pushButtonId + CELLS_COUNT_X + 1;
+        int tileUpperLeft = pushButtonId + CELLS_COUNT_X - 1;
+        int tileLowerRight = pushButtonId - CELLS_COUNT_X + 1;
+        int tileLowerLeft = pushButtonId  - CELLS_COUNT_X - 1;
+
+
+        celes.add(tileUpper);
+        celes.add(tileLower);
+        if ((pushButtonId + 1) % (CELLS_COUNT_X) != 0) {
+            celes.add(tileRight);
+            celes.add(tileUpperRight);
+            celes.add(tileLowerRight);
+        } else {
+            Log.d(MYLOG_TEG, "pushButtonId +1  % CELLS_COUNT_X = " + (pushButtonId + 1) % (CELLS_COUNT_X));
+        }
+
+        if (pushButtonId % (CELLS_COUNT_X) != 0) {
+            celes.add(tileLeft);
+            celes.add(tileUpperLeft);
+            celes.add(tileLowerLeft);
+        } else {
+            Log.d(MYLOG_TEG, "pushButtonId  % CELLS_COUNT_X = " + pushButtonId % CELLS_COUNT_X);
+        }
     }
 
     private boolean inBounds(int id) {
@@ -203,12 +216,15 @@ public class MainActivity extends AppCompatActivity {
                 imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.flaged));
                 imageView.setContentDescription(flag);
                 binding.timeTextView.setText(String.valueOf(bombCaunter++));
+                Log.e(MYLOG_TEG, " imageView.getId() =  " + imageView.getId());
+                return FLAGET;
 
 
             } else if (imageView.getContentDescription() == flag) {
                 imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.closed));
                 imageView.setContentDescription(noFlag);
                 binding.timeTextView.setText(String.valueOf(bombCaunter--));
+                return FLAGET;
 
 
             }
