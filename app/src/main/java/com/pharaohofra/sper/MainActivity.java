@@ -9,11 +9,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
+import android.view.ViewManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.pharaohofra.sper.databinding.ActivityMainBinding;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -39,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
     private int pushButtonId;
     private ArrayList<Integer> celes;
+
+    private int bomsNear;
+    private int idNoBomb;
 
 
     @Override
@@ -77,12 +82,12 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(MYLOG_TEG, "imageView.getTag().toString()" + imageView.getTag().toString());
                 receiveClick(imageView);
                 pushButtonId = imageView.getId();
-
+                Log.e(MYLOG_TEG, "pushButtonId =" + pushButtonId);
                 receiveClick(imageView);
 
-                if(receiveClick(imageView) == NO_BOMB) {
+                if (receiveClick(imageView) == NO_BOMB) {
                     getCordinatsCeles();
-                    ShowSeleWisAuutBimb();
+                    ShowSeleWisAuutBimb(gridLayout);
                 }
                 //TODO записат кодинаты соседних клеток
             });
@@ -94,13 +99,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void ShowSeleWisAuutBimb() {
+    private void ShowSeleWisAuutBimb(GridLayout gridLayout) {
+        bomsNear = 0;
         for (int id : celes) {
             if (inBounds(id)) {
                 ImageView imageViewTmp = findViewById(id);
 
-                if ((int)imageViewTmp.getTag() != BOMB) {
+                if ((int) imageViewTmp.getTag() != BOMB) {
                     receiveClick(imageViewTmp);
+                    idNoBomb = id;
+                }
+                if ((int) imageViewTmp.getTag() == BOMB) {
+                    Log.d(MYLOG_TEG, "bobs near sel" + imageViewTmp.getId());
+                    Log.d(MYLOG_TEG, "bomsNear =" + bomsNear);
+                    ImageView imageViewTmp2 = findViewById(idNoBomb);
+                    bomsNear++;
+                    imageViewTmp2.setVisibility(View.GONE);
+                    TextView textView = new TextView(this);
+                    textView.setText(String.valueOf(bomsNear));
+                    gridLayout.addView(textView);
+
+
                 }
             }
         }
@@ -118,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         int tileUpperRight = pushButtonId + CELLS_COUNT_X + 1;
         int tileUpperLeft = pushButtonId + CELLS_COUNT_X - 1;
         int tileLowerRight = pushButtonId - CELLS_COUNT_X + 1;
-        int tileLowerLeft = pushButtonId  - CELLS_COUNT_X - 1;
+        int tileLowerLeft = pushButtonId - CELLS_COUNT_X - 1;
 
 
         celes.add(tileUpper);
@@ -164,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
         Random rnd = new Random();
         boolean isMine = rnd.nextInt(100) < 30;
         if (isMine) {
+            //TODO
             Log.e(MYLOG_TEG, "isMine ");
             bombCaunter++;
             Log.e(MYLOG_TEG, "bombCaunter =  " + bombCaunter);
@@ -204,7 +224,6 @@ public class MainActivity extends AppCompatActivity {
                 ///Если мы попали в нолик, нужно открыть
                 ///Все соседние ячейки. Этим займётся GUI :)
                 imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.zero));
-                Log.e(MYLOG_TEG, " imageView.getId() =  " + imageView.getId());
                 return NO_BOMB;
 
             }
@@ -215,15 +234,14 @@ public class MainActivity extends AppCompatActivity {
             if (imageView.getContentDescription() == noFlag) {
                 imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.flaged));
                 imageView.setContentDescription(flag);
-                binding.timeTextView.setText(String.valueOf(bombCaunter++));
-                Log.e(MYLOG_TEG, " imageView.getId() =  " + imageView.getId());
+                binding.timeTextView.setText(String.valueOf(bombCaunter--));
                 return FLAGET;
 
 
             } else if (imageView.getContentDescription() == flag) {
                 imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.closed));
                 imageView.setContentDescription(noFlag);
-                binding.timeTextView.setText(String.valueOf(bombCaunter--));
+                binding.timeTextView.setText(String.valueOf(bombCaunter++));
                 return FLAGET;
 
 
