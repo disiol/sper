@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 int tileUpperRight = pushButtonId + CELLS_COUNT_X + 1;
                 int tileUpperLeft = pushButtonId + CELLS_COUNT_X - 1;
                 int tileLowerRight = pushButtonId - CELLS_COUNT_X + 1;
-                int tileLowerLeft = pushButtonId - CELLS_COUNT_X - 1;
+                int tileLowerLeft = pushButtonId  - CELLS_COUNT_X - 1;
 
 
                 celes.add(tileUpper);
@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                 if ((pushButtonId + 1) % (CELLS_COUNT_X) != 0) {
                     celes.add(tileLeft);
                     celes.add(tileUpperRight);
-                    celes.add(tileUpperLeft);
                     celes.add(tileLowerRight);
                 } else {
                     Log.d(MYLOG_TEG, "pushButtonId +1  % CELLS_COUNT_X = " + (pushButtonId + 1) % (CELLS_COUNT_X));
